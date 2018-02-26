@@ -19,6 +19,11 @@
   position: fixed;
   top: 250px;
   left: 40%;
+  border-radius: 50% !important;
+}
+
+.center-fixed p {
+  margin-top: 40% !important;
 }
 
 .square-box {
