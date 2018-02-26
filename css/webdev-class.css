@@ -1,0 +1,71 @@
+
+body {
+  background-color: #f1f1f1;
+}
+
+h1, h6 {
+  width: 100%;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.front-page-box h6 {
+  padding-bottom: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.front-page-box div {
+  height: 75%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.front-page-box {
+  background-color: white;
+  margin: 10px;
+
+}
+
+.three-col {
+  min-height: 200px;
+}
+
+.two-col {
+  min-height: 350px;
+}
+
+.one-col {
+  min-height: 500px;
+}
+
+#three-col-left {
+  background-image: url("../img/three-col-left.jpg");
+}
+
+#three-col-middle {
+  background-image: url("../img/three-col-middle.jpg");
+}
+
+#three-col-right {
+  background-image: url("../img/three-col-right.jpg");
+}
+
+#two-col-left {
+  background-image: url("../img/two-col-left.jpg");
+}
+#two-col-right {
+  background-image: url("../img/two-col-right.jpg");
+}
+
+#one-col {
+  background-image: url("../img/one-col.jpg");
+}
+
+footer {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .9em;
+  color: #888;
+}

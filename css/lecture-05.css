@@ -1,0 +1,53 @@
+/* Lecture 5 */
+
+.float-left {
+  position: relative;
+  float: left;
+  top: 100px;
+  left: 0;
+}
+
+.float-right {
+  position: relative;
+  float: right;
+  top: 100px;
+  right: 0;
+}
+
+.center-fixed {
+  position: static;
+  position: fixed;
+  top: 250px;
+  left: 40%;
+}
+
+.square-box {
+  width: 25%;
+  min-width: 250px;
+  min-height: 250px;
+  background-color: #eee;
+  border: 1px solid #555;
+  margin: 20px;
+  text-align: center;
+  box-shadow: 1px 1px 5px 0 #a2958a;
+  border-radius: 5px;
+}
+.square-box p {
+  font-size: 2em;
+  font-weight: 100;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
+
+/* From Lecture 4 */
+body {
+  background-color: #f1f1f1;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}

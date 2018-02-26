@@ -1,0 +1,30 @@
+
+body {
+  background-color: #f1f1f1;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+div {
+  width: 75%;
+  margin-left: 12.5%;
+  margin-top: 10%;
+  margin-bottom: 20%;
+  text-align: center;
+  background-color: tan;
+}
+
+.big-text {
+  font-size: 2em;
+  font-weight: 700;
+}
+
+footer {
+   width: 100%;
+   text-align: center; 
+}
