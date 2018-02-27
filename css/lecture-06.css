@@ -28,8 +28,15 @@ body {
 .center-fixed {
   position: static;
   position: fixed;
-  top: 250px;
+  top: 500px;
   left: 40%;
+  height: 250px !important;
+  width: 250px !important;
+  border-radius: 50% !important;
+  background-image: url("../img/navbar-brand.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .big-box {
