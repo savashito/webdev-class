@@ -10,6 +10,11 @@ h1, h6 {
   margin-bottom: 10px;
 }
 
+.hero-gradient {
+  color: white;
+  background: linear-gradient(to right, red , yellow);
+}
+
 .front-page-box h6 {
   padding-bottom: 5px;
   border-bottom: 1px solid gray;
