@@ -6,11 +6,12 @@ import uglify from 'gulp-uglify';
 import rename from 'gulp-rename';
 import cleanCSS from 'gulp-clean-css';
 import del from 'del';
-
 import sass from 'gulp-sass';
 import sourcemaps from 'gulp-sourcemaps';
-import gulpPath from 'gulp-path';
-
+import replacePath from 'gulp-replace-path';
+import path  from 'path';
+import htmlmin from 'gulp-htmlmin';
+import image from 'gulp-image';
 
 const paths = {
   images: {
@@ -18,15 +19,23 @@ const paths = {
     dest: 'www/assets/img/'
   },
   styles: {
-    src: 'src/styles/less/**/*.less',
-    dest: 'www/assets/css/'
+    src: 'src/styles/css/**/*.css',
+    dest: 'www/styles/css/'
   },
   scripts: {
     src: 'src/scripts/js/**/*.js',
-    dest: 'www/assets/js/'
+    dest: 'www/scripts/js/'
   },
-  pages: {
-    src: 'src/pages/**/*.*',
+  pageHome: {
+    src: 'src/index.html',
+    dest: 'www/'
+  },
+  pagesHtml: {
+    src: 'src/pages/**/*.html',
+    dest: 'www/pages/'
+  },
+  pagesCSS: {
+    src: 'src/pages/**/*.css',
     dest: 'www/pages/'
   },
   shared: {
@@ -35,12 +44,6 @@ const paths = {
   }
 };
 
-
-/*
- * Gulp Path
- */
-var app = new gulpPath.Path('src', 'www');
-var stylePaths = app.generateAllPaths('stylePaths', 'css', null, 'sass');
 
 /*
  * For small tasks you can export arrow functions
@@ -52,17 +55,17 @@ export const clean = () => del([ 'assets' ]);
  */
  export function images() {
    return gulp.src(paths.images.src)
+     .pipe(image())
      .pipe(gulp.dest(paths.images.dest));
  }
 
 export function styles() {
   return gulp.src(paths.styles.src)
-    .pipe(less())
     .pipe(cleanCSS())
     // pass in options to the stream
     .pipe(rename({
-      basename: 'main',
-      suffix: '.min'
+      base: '',
+      suffix: ''
     }))
     .pipe(gulp.dest(paths.styles.dest));
 }
@@ -71,13 +74,30 @@ export function scripts() {
   return gulp.src(paths.scripts.src, { sourcemaps: true })
     .pipe(babel())
     .pipe(uglify())
-    .pipe(concat('main.min.js'))
+    .pipe(concat('app.js'))
     .pipe(gulp.dest(paths.scripts.dest));
 }
 
-export function pages() {
-  return gulp.src(paths.pages.src)
-    .pipe(gulp.dest(paths.pages.dest));
+export function pagesHtml() {
+  return gulp.src(paths.pagesHtml.src)
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest(paths.pagesHtml.dest));
+}
+
+export function pageHome() {
+  return gulp.src(paths.pageHome.src)
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest(paths.pageHome.dest));
+}
+
+export function pagesCSS() {
+  return gulp.src(paths.pagesCSS.src)
+    .pipe(cleanCSS())
+    .pipe(rename({
+      base: '',
+      suffix: ''
+    }))
+    .pipe(gulp.dest(paths.pagesCSS.dest));
 }
 
 export function shared() {
@@ -92,7 +112,9 @@ function watchFiles() {
   gulp.watch(paths.images.src, images);
   gulp.watch(paths.scripts.src, scripts);
   gulp.watch(paths.styles.src, styles);
-  gulp.watch(paths.pages.src, pages);
+  gulp.watch(paths.pagesHtml.src, pages);
+  gulp.watch(paths.pagesCSS.src, pages);
+  gulp.watch(paths.pageHome.src, pages);
   gulp.watch(paths.shared.src, shared);
 }
 export { watchFiles as watch };
@@ -101,7 +123,13 @@ export { watchFiles as watch };
  * You can still use `gulp.task`
  * for example to set task names that would otherwise be invalid
  */
-const build = gulp.series(clean, gulp.parallel(images, styles, scripts, pages, shared));
+const build = gulp.series(clean, gulp.parallel(images,
+                                              styles,
+                                              scripts,
+                                              pagesHtml,
+                                              pagesCSS,
+                                              pageHome,
+                                              shared));
 gulp.task('build', build);
 
 /*

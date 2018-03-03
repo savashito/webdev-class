@@ -2,6 +2,8 @@
 
 Node
 ```
+brew install libjpeg libpng
+
 npm init
 npm install --global gulp@next jshint
 npm install --save-dev gulp-util
