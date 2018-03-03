@@ -12,6 +12,7 @@ import replacePath from 'gulp-replace-path';
 import path  from 'path';
 import htmlmin from 'gulp-htmlmin';
 import image from 'gulp-image';
+import stripComments from 'gulp-strip-comments';
 
 const paths = {
   images: {
@@ -72,6 +73,7 @@ export function styles() {
 
 export function scripts() {
   return gulp.src(paths.scripts.src, { sourcemaps: true })
+    .pipe(stripComments())
     .pipe(babel())
     .pipe(uglify())
     .pipe(concat('app.js'))
@@ -80,12 +82,14 @@ export function scripts() {
 
 export function pagesHtml() {
   return gulp.src(paths.pagesHtml.src)
+    .pipe(stripComments())
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(paths.pagesHtml.dest));
 }
 
 export function pageHome() {
   return gulp.src(paths.pageHome.src)
+    .pipe(stripComments())
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(paths.pageHome.dest));
 }
