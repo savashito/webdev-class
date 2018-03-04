@@ -14,6 +14,10 @@ import htmlmin from 'gulp-htmlmin';
 import image from 'gulp-image';
 import stripComments from 'gulp-strip-comments';
 
+import AWS from 'aws-sdk';
+import awsPublish from 'gulp-awspublish';
+import mergeStream from 'merge-stream';
+
 const paths = {
   images: {
     src: 'src/assets/img/**/*.*',
@@ -51,9 +55,9 @@ const paths = {
  */
 export const clean = () => del([ 'assets' ]);
 
-/*
- * You can also declare named functions and export them as tasks
- */
+/*--------------------------------------------------------------------
+                MAIN SITE COMPILATION
+  --------------------------------------------------------------------*/
  export function images() {
    return gulp.src(paths.images.src)
      .pipe(image())
@@ -108,6 +112,39 @@ export function shared() {
   return gulp.src(paths.shared.src)
     .pipe(gulp.dest(paths.shared.dest));
 }
+/*--------------------------------------------------------------------
+                END MAIN SITE COMPILATION
+  --------------------------------------------------------------------*/
+
+export function awsPublisher() {
+
+  // create a new publisher using S3 options
+  // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property
+  var publisher = awsPublish.create({
+    region: 'us-east-1',
+    params: {
+      Bucket: 'webdev-class.lawrencemcdaniel.com'
+    },
+    credentials: new AWS.SharedIniFileCredentials({profile: 'default'})
+  }, {
+    cacheFileName: ''
+  });
+
+  // define custom headers
+  var headers = {
+    'Cache-Control': 'max-age=315360000, no-transform, public'
+    // ...
+  };
+
+  var gzip = gulp.src('./www/**/*.js').pipe(awsPublish.gzip());
+  var plain = gulp.src('./www/**/*');
+
+  return mergeStream(gzip, plain)
+    .pipe(publisher.publish(headers))
+    .pipe(publisher.sync())
+    .pipe(publisher.cache())
+    .pipe(awsPublish.reporter());
+};
 
  /*
   * You could even use `export as` to rename exported tasks
@@ -127,13 +164,12 @@ export { watchFiles as watch };
  * You can still use `gulp.task`
  * for example to set task names that would otherwise be invalid
  */
-const build = gulp.series(clean, gulp.parallel(images,
-                                              styles,
-                                              scripts,
-                                              pagesHtml,
-                                              pagesCSS,
-                                              pageHome,
-                                              shared));
+
+const build = gulp.series(clean,
+                          gulp.parallel(images, styles, scripts, pagesHtml, pagesCSS, pageHome, shared),
+                          awsPublisher);
+
+
 gulp.task('build', build);
 
 /*
