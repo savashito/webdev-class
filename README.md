@@ -2,6 +2,14 @@
 
 Node
 ```
+# App generator
+npm install --global yo
+npm install --global generator-webapp
+npm install -g bower
+yo webapp
+
+
+#or setup Gulp manually
 brew install libjpeg libpng
 
 npm init
