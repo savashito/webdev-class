@@ -1,6 +1,6 @@
 function includeHTML() {
 
-  console.log("I wonder is lint sees  this comment?");
+  console.log("I wonder if lint can see  this comment?");
   var z, i, elmnt, file, xhttp;
   /*loop through a collection of all HTML elements:*/
   z = document.getElementsByTagName("*");
